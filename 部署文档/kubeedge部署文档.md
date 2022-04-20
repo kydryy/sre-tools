@@ -28,12 +28,12 @@ cloudcore-7448499647-qlv9v     1/1     Running   0          4h12m
 ```
 pod为Running状态即可
 ### 部署iptablesmanager
-默认的部署方式是以k8s的master节点的iptables作为kubectl log/exec的转发，会自动执行
+默认的部署方式cloudcore以hostnework的方式部署在master节点上，会自动执行
 ```
 iptables -t nat -A OUTPUT -p tcp --dport 10350 -j DNAT --to $CLOUDCOREIPS:10003
 ```
 其中dport和CLOUDCOREIPS由tunnelport那个configmap指定
-我们修改成使用单独的容器的iptables来做
+我们修改成使用单独的容器的iptables manager来做这些操作
 以下操作均在k8s master上执行
 1. 部署cloud-iptables-manager
 由于官方提供的iptablesmanager镜像有问题无法下载，只能自己打包docker。
@@ -61,6 +61,7 @@ NAME                           READY   STATUS    RESTARTS   AGE
 cloud-iptables-manager-cqmp7   1/1     Running   0          4h13m
 cloud-iptables-manager-dkf4t   1/1     Running   0          4h13m
 cloud-iptables-manager-fh962   1/1     Running   0          4h13m
+cloudcore-7448499647-qlv9v     1/1     Running   0          4h13m
 ```
 ![image](https://user-images.githubusercontent.com/6283866/164164867-ef6f8d07-84e0-44f4-95c6-ed17ece2d484.png)
 
@@ -116,6 +117,15 @@ iptablesManager:
   sessionAffinity: None
   type: NodePort
 ---
+# kubectl get svc cloudcore -n kubeedge
+NAME        TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                                                                           AGE
+cloudcore   NodePort   10.233.38.170   <none>        10000:30000/TCP,10001:30001/TCP,10002:30002/TCP,10003:30003/TCP,10004:30004/TCP   24h
 ```
 ### 部署edgecore
-
+客户端部署也使用keadm安装，但是由于客户端的机器性能较差且在国内，keadm安装过程需要访问github.com来下载安装包，所以我们提前准备好文件传到客户端的服务器上
+需要准备的工具如下
+|工具|版本|下载地址|
+|---|---|---|
+|keadm|v1.10.0|https://github.com/kubeedge/kubeedge/releases/download/v1.10.0/keadm-v1.10.0-linux-amd64.tar.gz|
+|kubeedge-v1.10.0-linux-amd64.tar.gz|v1.10.0|https://github.com/kubeedge/kubeedge/releases/download/v1.10.0/kubeedge-v1.10.0-linux-amd64.tar.gz|
+|edgecore.service|无|
