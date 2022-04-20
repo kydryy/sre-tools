@@ -161,11 +161,19 @@ cloudcore   NodePort   10.233.38.170   <none>        10000:30000/TCP,10001:30001
 NAME                      STATUS   ROLES                  AGE   VERSION
 edgenode-106.xx.xx.xx     Ready    agent,edge             23h   v1.22.6-kubeedge-v1.10.0
 ```
-### 实现kubectl logs/exec操作edgenode
+### 实现kubectl logs/exec操作edgenode  
+新版本不需要手动添加iptables了，但是还是需要手动启动edgecore端的配置**代码注释里写着edgeStream的enable默认为true，可是实际上是false！**
+```
+# vi /etc/kubeedge/config/edgecore.yaml
+---
+  edgeStream:
+    enable: true
+---
+```
+修改即可
+### 获取edgenode的度量  
+度量同上，只需要安装metrics-server0.4.1版本以上就可以，因为他默认从kubelet获取node的度量，目前只支持cpu和内存
+### 删除edgenode节点  
 待补充
-### 获取edgenode的度量
-待补充
-### 删除edgenode节点
-待补充
-### 删除kubeedge
+### 删除kubeedge  
 待补充
