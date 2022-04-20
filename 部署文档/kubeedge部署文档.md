@@ -80,7 +80,8 @@ iptablesManager:
 # kubectl edit deploy cloudcore -n kubeedge
 删除hostNetwork: true
 ```
-因为默认使用的hostNetwork方式运行的cloudcore，修改成使用外部iptables以后必须修改这里，之后他就会自然把iptables规则指向对应的svc
+因为默认使用的hostNetwork方式运行的cloudcore，修改成使用外部iptables以后必须修改这里，之后他就会自然把iptables规则指向对应的svc  
+
 4. 修改cloudcore的service，从clusterIP修改成Nodeport，并且将对应的port改成30000-30004
 ```
 # kubectl edit svc cloudcore -n kubeedge
@@ -135,7 +136,7 @@ cloudcore   NodePort   10.233.38.170   <none>        10000:30000/TCP,10001:30001
 ```
 记录token，后面用来注册node
 以下操作在客户端node上运行
-1. 复制三个文件到对应目录
+1. 复制三个文件到对应目录  
 ```
 # mkdir -p /etc/kubeedge
 # cd /etc/kubeedge
@@ -143,7 +144,7 @@ cloudcore   NodePort   10.233.38.170   <none>        10000:30000/TCP,10001:30001
 # wget https://github.com/kubeedge/kubeedge/releases/download/v1.10.0/kubeedge-v1.10.0-linux-amd64.tar.gz
 复制edgecore.service到/etc/kubeedge目录
 ```
-2. 启动客户端安装
+2. 启动客户端安装  
 ```
 # keadm join --cloudcore-ipport=218.XX.XX.XX:10000  --edgenode-name edgenode-106.xx.xx.xx --token $token -l edgenode=yes
 ```
@@ -151,7 +152,7 @@ cloudcore   NodePort   10.233.38.170   <none>        10000:30000/TCP,10001:30001
 --edgenode-name：注册后的node名字
 --token：上面在master上获取到的token
 -l：指定edgenode的label
-3. 测试安装是否完成
+3. 测试安装是否完成  
 在master节点上运行
 ```
 # kubectl get node
@@ -160,6 +161,10 @@ NAME                      STATUS   ROLES                  AGE   VERSION
 edgenode-106.xx.xx.xx     Ready    agent,edge             23h   v1.22.6-kubeedge-v1.10.0
 ```
 ### 实现kubectl logs/exec操作edgenode
-待续
+待补充
 ### 获取edgenode的度量
-待续
+待补充
+### 删除edgenode节点
+待补充
+### 删除kubeedge
+待补充
