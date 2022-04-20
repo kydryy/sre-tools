@@ -162,13 +162,15 @@ NAME                      STATUS   ROLES                  AGE   VERSION
 edgenode-106.xx.xx.xx     Ready    agent,edge             23h   v1.22.6-kubeedge-v1.10.0
 ```
 ### 实现kubectl logs/exec操作edgenode  
-新版本不需要手动添加iptables了，但是还是需要手动启动edgecore端的配置**代码注释里写着edgeStream的enable默认为true，可是实际上是false！**
+新版本不需要手动添加iptables了，但是还是需要手动启动edgecore端的配置  
+**代码注释里写着edgeStream的enable默认为true，可是实际上是false！**
 ```
 # vi /etc/kubeedge/config/edgecore.yaml
 ---
   edgeStream:
     enable: true
 ---
+# systemctl restart edgecore
 ```
 修改即可
 ### 获取edgenode的度量  
