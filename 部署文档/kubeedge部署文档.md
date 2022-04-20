@@ -122,10 +122,44 @@ NAME        TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                    
 cloudcore   NodePort   10.233.38.170   <none>        10000:30000/TCP,10001:30001/TCP,10002:30002/TCP,10003:30003/TCP,10004:30004/TCP   24h
 ```
 ### 部署edgecore
-客户端部署也使用keadm安装，但是由于客户端的机器性能较差且在国内，keadm安装过程需要访问github.com来下载安装包，所以我们提前准备好文件传到客户端的服务器上
+客户端部署也使用keadm安装，但是由于客户端的机器性能较差且在国内，keadm安装过程需要访问github.com来下载安装包，所以我们提前准备好文件传到客户端的服务器上,就不会再下载了  
 需要准备的工具如下
 |工具|版本|下载地址|
 |---|---|---|
 |keadm|v1.10.0|https://github.com/kubeedge/kubeedge/releases/download/v1.10.0/keadm-v1.10.0-linux-amd64.tar.gz|
 |kubeedge-v1.10.0-linux-amd64.tar.gz|v1.10.0|https://github.com/kubeedge/kubeedge/releases/download/v1.10.0/kubeedge-v1.10.0-linux-amd64.tar.gz|
-|edgecore.service|无|
+|edgecore.service|无|https://github.com/kubeedge/kubeedge/blob/master/build/tools/edgecore.service|
+以下操作在master上运行
+```
+# keadm gettoken
+```
+记录token，后面用来注册node
+以下操作在客户端node上运行
+1. 复制三个文件到对应目录
+```
+# mkdir -p /etc/kubeedge
+# cd /etc/kubeedge
+# wget https://githu/etc/kubeedgeb.com/kubeedge/kubeedge/releases/download/v1.10.0/keadm-v1.10.0-linux-amd64.tar.gz && tar -zxvf keadm-v1.10.0-linux-amd64.tar.gz && mv keadm-v1.10.0-linux-amd64/keadm /usr/local/bin/ 
+# wget https://github.com/kubeedge/kubeedge/releases/download/v1.10.0/kubeedge-v1.10.0-linux-amd64.tar.gz
+复制edgecore.service到/etc/kubeedge目录
+```
+2. 启动客户端安装
+```
+# keadm join --cloudcore-ipport=218.XX.XX.XX:10000  --edgenode-name edgenode-106.xx.xx.xx --token $token -l edgenode=yes
+```
+--cloudcore-ipport: 公网注册的ip端口
+--edgenode-name：注册后的node名字
+--token：上面在master上获取到的token
+-l：指定edgenode的label
+3. 测试安装是否完成
+在master节点上运行
+```
+# kubectl get node
+[root@node1 ~]# kubectl get node
+NAME                      STATUS   ROLES                  AGE   VERSION
+edgenode-106.xx.xx.xx     Ready    agent,edge             23h   v1.22.6-kubeedge-v1.10.0
+```
+### 实现kubectl logs/exec操作edgenode
+待续
+### 获取edgenode的度量
+待续
