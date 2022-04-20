@@ -16,10 +16,17 @@ KubeEdge是一个开源系统，用于将容器化应用程序编排功能扩展
 ![image](https://user-images.githubusercontent.com/6283866/164159821-7d29c70a-43aa-407d-9805-3256bc46e2a8.png)
 2. 在k8s master节点上运行安装程序
 ```
-keadm beta init --advertise-address="218.xx.xx.x,110.xx.xx.xx,10.20.3.30,10.20.3.31,10.20.3.32"  kube-config=/root/.kube/config
-```
-具体参数--advertise-address为他的外网IP，主要是为了从外网注册过来
+# keadm beta init --advertise-address="218.xx.xx.x,110.xx.xx.xx,10.20.3.30,10.20.3.31,10.20.3.32"  kube-config=/root/.kube/config
+--advertise-address为他的外网IP，主要是为了从外网注册过来
 不出意外的话，会生成很多CRD和一个deployment
+# kubectl get deploy -n kubeedge
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+cloudcore   1/1     1            1           24h
+# kubectl get pod -n kubeedge
+NAME                           READY   STATUS    RESTARTS   AGE
+cloudcore-7448499647-qlv9v     1/1     Running   0          4h12m
+```
+pod为Running状态即可
 ### 部署iptablesmanager
 默认的部署方式是以k8s的master节点的iptables作为kubectl log/exec的转发，会自动执行
 ```
