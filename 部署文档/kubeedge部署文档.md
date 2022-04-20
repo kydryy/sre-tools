@@ -12,7 +12,8 @@ KubeEdge是一个开源系统，用于将容器化应用程序编排功能扩展
 ### 部署cloudcore
 这里我们使用keadm以容器的方式部署kubeedge，注意，cloudcore和edgecore都需要使用同一个版本的安装文件
 1. 在k8s master节点上下载keadm
-下载地址：https://github.com/kubeedge/kubeedge/releases，解压缩后运行version，可以看到是1.10版本
+下载地址：https://github.com/kubeedge/kubeedge/releases
+解压缩后运行version，可以看到是1.10版本
 ![image](https://user-images.githubusercontent.com/6283866/164159821-7d29c70a-43aa-407d-9805-3256bc46e2a8.png)
 2. 在k8s master节点上运行安装程序
 ```
