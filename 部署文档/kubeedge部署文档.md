@@ -175,6 +175,17 @@ edgenode-106.xx.xx.xx     Ready    agent,edge             23h   v1.22.6-kubeedge
 修改即可
 ### 获取edgenode的度量  
 度量同上，只需要安装metrics-server0.4.1版本以上就可以，因为他默认从kubelet获取node的度量，目前只支持cpu和内存
+### 防止calico等服务跑到edgenode上去
+添加affinity即可
+```
+affinity:
+nodeAffinity:
+  requiredDuringSchedulingIgnoredDuringExecution:
+    nodeSelectorTerms:
+      - matchExpressions:
+          - key: node-role.kubernetes.io/edge
+            operator: DoesNotExist
+```
 ### 删除edgenode节点  
 待补充
 ### 删除kubeedge  
