@@ -199,7 +199,7 @@ nodeAffinity:
           operator: Exists
           effect: NoSchedule
 ```
-容忍度介绍看kubernetes官方文档
+容忍度介绍看kubernetes官方文档  
 2. 添加nodeSelector
 ```
       nodeSelector:
