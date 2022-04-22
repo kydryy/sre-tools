@@ -75,7 +75,8 @@ iptablesManager:
   mode: "external"
 ---
 ```
-![image](https://user-images.githubusercontent.com/6283866/164162521-3e3544a1-502c-4db1-bdd1-c450e65e1399.png)  
+![image](https://user-images.githubusercontent.com/6283866/164162521-3e3544a1-502c-4db1-bdd1-c450e65e1399.png)    
+
 3. 修改cloudcore的deployment  
 ```
 # kubectl edit deploy cloudcore -n kubeedge
@@ -136,7 +137,7 @@ cloudcore   NodePort   10.233.38.170   <none>        10000:30000/TCP,10001:30001
 # keadm gettoken
 ```
 记录token，后面用来注册node
-以下操作在客户端node上运行
+以下操作在客户端node上运行  
 1. 复制三个文件到对应目录  
 ```
 # mkdir -p /etc/kubeedge
@@ -144,7 +145,8 @@ cloudcore   NodePort   10.233.38.170   <none>        10000:30000/TCP,10001:30001
 # wget https://githu/etc/kubeedgeb.com/kubeedge/kubeedge/releases/download/v1.10.0/keadm-v1.10.0-linux-amd64.tar.gz && tar -zxvf keadm-v1.10.0-linux-amd64.tar.gz && mv keadm-v1.10.0-linux-amd64/keadm /usr/local/bin/ 
 # wget https://github.com/kubeedge/kubeedge/releases/download/v1.10.0/kubeedge-v1.10.0-linux-amd64.tar.gz
 复制edgecore.service到/etc/kubeedge目录
-```
+```  
+
 2. 启动客户端安装  
 ```
 # keadm join --cloudcore-ipport=218.XX.XX.XX:10000  --edgenode-name edgenode-106.xx.xx.xx --token $token -l edgenode=yes
@@ -152,7 +154,7 @@ cloudcore   NodePort   10.233.38.170   <none>        10000:30000/TCP,10001:30001
 --cloudcore-ipport: 公网注册的ip端口
 --edgenode-name：注册后的node名字
 --token：上面在master上获取到的token
--l：指定edgenode的label
+-l：指定edgenode的label  
 3. 测试安装是否完成  
 在master节点上运行
 ```
@@ -192,7 +194,7 @@ nodeAffinity:
             operator: DoesNotExist
 ```
 ### 允许服务运行到edgenode上
-1. 添加容忍度
+1. 添加容忍度  
 ```
       tolerations:
         - key: node-role.kubernetes.io/edge
