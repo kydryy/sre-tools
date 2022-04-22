@@ -66,7 +66,7 @@ cloudcore-7448499647-qlv9v     1/1     Running   0          4h13m
 ```
 ![image](https://user-images.githubusercontent.com/6283866/164164867-ef6f8d07-84e0-44f4-95c6-ed17ece2d484.png)
 
-3. 修改configmap cloudcore，添加以下内容
+2. 修改configmap cloudcore，添加以下内容
 ```
 # kubectl edit cm cloudcore -n kubeedge
 ---
