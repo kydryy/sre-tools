@@ -1,20 +1,20 @@
-# kubeedge部署文档
-## 介绍
+# kubeedge部署文档  
+## 介绍  
 KubeEdge是一个开源系统，用于将容器化应用程序编排功能扩展到Edge的主机。它基于kubernetes构建，并为网络应用程序提供基础架构支持。云和边缘之间的部署和元数据同步。
 ![image](https://user-images.githubusercontent.com/6283866/164159086-29a5ca40-3029-4b71-a743-f7eacdac964b.png)
-官网：https://kubeedge.io
-## 准备
-### 组件版本
+官网：https://kubeedge.io  
+## 准备  
+### 组件版本  
 |组件|版本|
 |--|--|
 |K8S|1.21|
 |kubeege|v1.10.0|
 ### 部署cloudcore
-这里我们使用keadm以容器的方式部署kubeedge，注意，cloudcore和edgecore都需要使用同一个版本的安装文件
+这里我们使用keadm以容器的方式部署kubeedge，注意，cloudcore和edgecore都需要使用同一个版本的安装文件  
 1. 在k8s master节点上下载keadm
 下载地址：https://github.com/kubeedge/kubeedge/releases
 解压缩后运行version，可以看到是1.10版本
-![image](https://user-images.githubusercontent.com/6283866/164159821-7d29c70a-43aa-407d-9805-3256bc46e2a8.png)
+![image](https://user-images.githubusercontent.com/6283866/164159821-7d29c70a-43aa-407d-9805-3256bc46e2a8.png)  
 2. 在k8s master节点上运行安装程序
 ```
 # keadm beta init --advertise-address="218.xx.xx.x,110.xx.xx.xx,10.20.3.30,10.20.3.31,10.20.3.32"  kube-config=/root/.kube/config
@@ -29,14 +29,14 @@ cloudcore-7448499647-qlv9v     1/1     Running   0          4h12m
 ```
 pod为Running状态即可
 ### 部署iptablesmanager
-默认的部署方式cloudcore以hostnework的方式部署在master节点上，会自动执行
+默认的部署方式cloudcore以hostnework的方式部署在master节点上，会自动执行  
 ```
 iptables -t nat -A OUTPUT -p tcp --dport 10350 -j DNAT --to $CLOUDCOREIPS:10003
 ```
 其中dport和CLOUDCOREIPS由tunnelport那个configmap指定
 我们修改成使用单独的容器的iptables manager来做这些操作
-以下操作均在k8s master上执行
-1. 部署cloud-iptables-manager
+以下操作均在k8s master上执行  
+1. 部署cloud-iptables-manager  
 由于官方提供的iptablesmanager镜像有问题无法下载，只能自己打包docker。
 ```
 下载github上的kubeedge代码
@@ -66,7 +66,7 @@ cloudcore-7448499647-qlv9v     1/1     Running   0          4h13m
 ```
 ![image](https://user-images.githubusercontent.com/6283866/164164867-ef6f8d07-84e0-44f4-95c6-ed17ece2d484.png)
 
-2. 修改configmap cloudcore，添加以下内容
+2. 修改configmap cloudcore，添加以下内容  
 ```
 # kubectl edit cm cloudcore -n kubeedge
 ---
@@ -75,8 +75,8 @@ iptablesManager:
   mode: "external"
 ---
 ```
-![image](https://user-images.githubusercontent.com/6283866/164162521-3e3544a1-502c-4db1-bdd1-c450e65e1399.png)
-3. 修改cloudcore的deployment
+![image](https://user-images.githubusercontent.com/6283866/164162521-3e3544a1-502c-4db1-bdd1-c450e65e1399.png)  
+3. 修改cloudcore的deployment  
 ```
 # kubectl edit deploy cloudcore -n kubeedge
 删除hostNetwork: true
