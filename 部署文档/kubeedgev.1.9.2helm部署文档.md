@@ -40,8 +40,8 @@ version.BuildInfo{Version:"v3.8.2", GitCommit:"6e3701edea09e5d55a8ca2aae03a68917
 |keadm|v1.9.2|https://github.com/kubeedge/kubeedge/releases/download/v1.9.2/keadm-v1.9.2-linux-amd64.tar.gz|
 |kubeedge-v1.9.2-linux-amd64.tar.gz|v1.10.0|https://github.com/kubeedge/kubeedge/releases/download/v1.9.2/kubeedge-v1.9.2-linux-amd64.tar.gz|
 |edgecore.service|无|https://github.com/kubeedge/kubeedge/blob/master/build/tools/edgecore.service|
-|checksum_kubeedge-v1.9.2-linux-amd64.tar.gz.txt|v1.9.2|https://github.com/kubeedge/kubeedge/releases/download/v1.9.2/checksum_kubeedge-v1.9.2-linux-amd64.tar.gz.txt|
-以下操作在master上运行
+|checksum_kubeedge-v1.9.2-linux-amd64.tar.gz.txt|v1.9.2|https://github.com/kubeedge/kubeedge/releases/download/v1.9.2/checksum_kubeedge-v1.9.2-linux-amd64.tar.gz.txt|  
+**以下操作在master上运行**
 ```
 # keadm gettoken
 ```
