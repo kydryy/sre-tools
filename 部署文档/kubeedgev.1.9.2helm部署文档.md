@@ -65,7 +65,7 @@ version.BuildInfo{Version:"v3.8.2", GitCommit:"6e3701edea09e5d55a8ca2aae03a68917
 --cloudcore-ipport: 公网注册的ip端口
 --edgenode-name：注册后的node名字
 --token：上面在master上获取到的token
--l：指定edgenode的label
+-l：指定edgenode的label  
 3. 测试安装是否完成  
 在master节点上运行
 ```
