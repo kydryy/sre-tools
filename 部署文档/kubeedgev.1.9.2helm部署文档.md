@@ -22,7 +22,7 @@ KubeEdge是一个开源系统，用于将容器化应用程序编排功能扩展
 # helm version
 version.BuildInfo{Version:"v3.8.2", GitCommit:"6e3701edea09e5d55a8ca2aae03a68917630e91b", GitTreeState:"clean", GoVersion:"go1.17.5"}
 ```  
-注意PATH
+注意PATH  
 2. 在k8s master节点上下载kubeedge代码并切换到release-1.9分支
 下载地址：https://github.com/kubeedge/kubeedge/releases
 ```
