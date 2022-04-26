@@ -29,9 +29,71 @@ version.BuildInfo{Version:"v3.8.2", GitCommit:"6e3701edea09e5d55a8ca2aae03a68917
 # wget https://github.com/kubeedge/kubeedge
 # cd kubeedge
 # git checkout release-1.9
+```  
+3. 修改helm的配置  
+主要是修改values.yaml和templates/rbac_cloudcore.yaml
 ```
-3. 修改helm的配置
+# cd kubeedge/build/helm/cloudcore
+修改values.yaml
+# vi values.yaml
+appVersion: "1.9.2" # 默认为1.8.2
 
+cloudCore:
+  replicaCount: 1
+  hostNetWork: "false" # 默认为true
+  image:
+    repository: "kubeedge/cloudcore"
+    tag: "v1.9.2" #默认为1.8.2
+  ......
+  resources:   #默认有limit，删除掉
+    requests:
+      cpu: 100m
+      memory: 512Mi
+  ......
+  modules:
+    cloudHub:
+      # Causion!: Leave this entry to empty will cause CloudCore to exit abnormally once KubeEdge is enabled.
+      # At least a public IP Address or an IP which can be accessed by edge nodes must be provided!
+      advertiseAddress:   # 配置公网ip，主要是用于外部访问证书验证
+        - "123.xx.xx.xx"
+        - "123.xx.xx.xx"
+   ......
+iptablesManager:
+  enable: "true"
+  mode: "external"
+  hostNetWork: true
+  image:
+    repository: "kubeedge/iptables-manager"
+    tag: "v1.9.2"  #修改为1.9.2
+修改templates/rbac_cloudcore.yaml
+# vi templates/rbac_cloudcore.yaml
+resources: ["nodes", "nodes/status", "configmaps", "pods", "pods/status", "secrets", "endpoints", "services","persistentvolumes","persistentvolumeclaims"]
+改成 resources: ["serviceaccounts/token","nodes", "nodes/status", "configmaps", "pods", "pods/status", "secrets", "endpoints", "services","persistentvolumes","persistentvolumeclaims"]
+原因是让cloudcore的sa有获取sa token的一系列权限，否则无法在其他项目里部署程序
+启动helm部署
+# helm upgrade --install cloudcore ./cloudcore --namespace kubeedge --create-namespace -f ./cloudcore/values.yaml
+查看启动后结果可以看到iptables-manager的daemonset 和cloudcore的deployment都启动起来了，nodeport的service也起来了
+[root@node1 ~]# kubectl get all -n kubeedge
+NAME                               READY   STATUS    RESTARTS   AGE
+pod/cloud-iptables-manager-dgmbh   1/1     Running   0          23h
+pod/cloud-iptables-manager-mz65k   1/1     Running   0          23h
+pod/cloud-iptables-manager-tspmb   1/1     Running   0          23h
+pod/cloudcore-575549774b-rgdt5     1/1     Running   0          21h
+
+NAME                TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)                                                                           AGE
+service/cloudcore   NodePort   10.233.47.82   <none>        10000:30000/TCP,10001:30001/TCP,10002:30002/TCP,10003:30003/TCP,10004:30004/TCP   23h
+
+NAME                                    DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+daemonset.apps/cloud-iptables-manager   3         3         3       3            3           <none>          23h
+
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/cloudcore   1/1     1            1           23h
+
+NAME                                   DESIRED   CURRENT   READY   AGE
+replicaset.apps/cloudcore-575549774b   1         1         1       21h
+replicaset.apps/cloudcore-fc79547bb    0         0         0       23h
+
+```  
 ### 部署edgecore
 客户端部署也使用keadm安装，但是由于客户端的机器性能较差且在国内，keadm安装过程需要访问github.com来下载安装包，所以我们提前准备好文件传到客户端的服务器上,就不会再下载了  
 需要准备的工具如下
