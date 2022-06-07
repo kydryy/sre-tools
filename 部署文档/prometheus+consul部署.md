@@ -13,6 +13,9 @@
 # 安装
 使用docker-compose安装启动consul和Prometheus
 ```
+# mkdir -p prometheus/{data,config}
+# mkdir -p consul
+# chown 65534:65534 prometheus
 # docker-compose up -d
 ```
 # 配置
