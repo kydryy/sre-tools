@@ -117,6 +117,25 @@ Meta里就是新增metadata，后面Prometheus可以获取到这个metadata并re
 增加的配置作用为匹配 __meta_consul_service_metadata_ 开头的标签，将捕获到的内容作为新的标签名称，匹配到标签的的值作为新标签的值，而我们刚添加的三个自定义标签，系统会自动添加 __meta_consul_service_metadata_app=test、__meta_consul_service_metadata_department=support 两个标签，经过  relabel 后，Prometheus 将会新增 app=test、department=support两个标签。重启 Prometheus 服务，可以看到新增了对应了三个自定义标签。  
 第四个问题其实和上面的一样，就是使用不同的tag来表示不同的服务器分组，然后分别添加进去
 ```
-  
+ - job_name: 'consul-prometheus'
+  consul_sd_configs:
+    - server: '10.0.0.1:8500'
+      services: []  
+  relabel_configs:
+    - source_labels: [__meta_consul_tags]
+      regex: .*test.*
+      action: keep
+    - regex: __meta_consul_service_metadata_(.+)
+      action: labelmap
+ - job_name: 'groupb-prometheus'
+  consul_sd_configs:
+    - server: '10.0.0.1:8500'
+      services: []  
+  relabel_configs:
+    - source_labels: [__meta_consul_tags]
+      regex: .*groupb.*
+      action: keep
+    - regex: __meta_consul_service_metadata_(.+)
+      action: labelmap
 ```
  
