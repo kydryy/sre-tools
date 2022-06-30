@@ -33,7 +33,8 @@ nginxhtml目录：存储nginx的默认静态文件
 ```
 # docker-compose up -d
 ```
-启动后需要等带acme.sh的容器运行完成，如果发现acme.sh运行有误请自行解决
+启动后需要等带acme.sh的容器运行完成，如果发现acme.sh运行有误请自行解决  
+如果发现trojan一直启动失败，证书生成正常后重启容器即可
 ### 添加cron
 主要是为了定期更新证书
 ```
