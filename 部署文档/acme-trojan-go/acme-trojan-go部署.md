@@ -42,3 +42,14 @@ nginxhtml目录：存储nginx的默认静态文件
 34 0 * * * /usr/sbin/docker run --rm  -it -v /home/trojan-go/config:/acme.sh --net=host neilpang/acme.sh --cron
 35 0 * * * /usr/sbin/docker restart webserver
 ```
+### 客户端配置
+使用clash作为客户端，配置文件添加一个proxies即可
+proxies:
+......
+  - name: "trojan"
+    type: trojan
+    server: youripaddress
+    port: 7443
+    password: yourpasswordchangeit
+    # udp: true
+    sni: tr.mydomain.com # aka server name
