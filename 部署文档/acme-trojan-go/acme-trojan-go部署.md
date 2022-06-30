@@ -3,10 +3,10 @@
 使用acme生成域名证书，配置trojan-go作为服务端，具体原理用途不讲了，多搜索就好了
 ## 部署过程
 ### 生成挂载的本地目录
-用途是为了使证书能顺利通过
+**config目录** ：存储acme.sh生成的证书以及trojan server端的config.json文件
+**nginxhtml目录**：存储nginx的默认静态文件
+用途是为了能正确的通过acme获取到https证书
 ```
-config目录：存储acme.sh生成的证书以及trojan server端的config.json文件
-nginxhtml目录：存储nginx的默认静态文件
 # mkdir -p /home/trojan-go/{config,nginxhtml} 
 # echo 123 > /home/trojan-go/nginxhtml/index.html
 # vi /home/trojan-go/config.json
@@ -44,6 +44,7 @@ nginxhtml目录：存储nginx的默认静态文件
 ```
 ### 客户端配置
 使用clash作为客户端，配置文件添加一个proxies即可
+```
 proxies:
 ......
   - name: "trojan"
@@ -53,3 +54,4 @@ proxies:
     password: yourpasswordchangeit
     # udp: true
     sni: tr.mydomain.com # aka server name
+```
