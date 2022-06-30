@@ -3,7 +3,7 @@
 使用acme生成域名证书，配置trojan-go作为服务端，具体原理用途不讲了，多搜索就好了
 ## 部署过程
 ### 生成挂载的本地目录
-**config目录** ：存储acme.sh生成的证书以及trojan server端的config.json文件
+**config目录** ：存储acme.sh生成的证书以及trojan server端的config.json文件  
 **nginxhtml目录**：存储nginx的默认静态文件
 用途是为了能正确的通过acme获取到https证书
 ```
