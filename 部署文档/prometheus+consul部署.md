@@ -31,7 +31,14 @@
 $ curl -X PUT -d '{"id": "node-exporter","name": "node-exporter-10.0.0.1","address": "10.0.0.1","port": 12345,"tags": ["test"],"checks": [{"http": "http://10.0.0.1:12345/metrics", "interval": "5s"}]}'  http://10.0.0.1:8500/v1/agent/service/register
 ```
 执行完毕后，刷新一下 Consul Web 控制台页面，可以看到成功注册到 Consul 中。
-![image](https://user-images.githubusercontent.com/6283866/172286445-65d2616c-4449-462f-b09a-2798de46296a.png)
+![image](https://user-images.githubusercontent.com/6283866/172286445-65d2616c-4449-462f-b09a-2798de46296a.png)  
+**删除服务
+
+有些时候需要删除服务，需要根据上面的ID来删除
+```
+curl --request PUT http://10.0.0.1:8500/v1/agent/service/deregister/myservice-id  
+```  
+返回200就是删除成功
 ## prometheus配置
 ```
 ...
